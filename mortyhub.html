@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MortyHub Elite V3 | Obfuscator</title>
+    <title>MortyHub Elite V3 | Ultra Obfuscator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -42,105 +42,138 @@
 <body class="min-h-screen flex flex-col items-center p-4 md:p-8">
 
     <header class="w-full max-w-4xl flex flex-col items-center mb-8 animate-pulse">
-        <h1 class="text-4xl md:text-6xl font-bold tracking-tighter mb-2">
-            MORTYHUB <span class="text-white">V3</span>
+        <h1 class="text-4xl md:text-6xl font-bold tracking-tighter mb-2 text-white">
+            MORTYHUB <span class="text-green-500">V3</span>
         </h1>
-        <p class="text-gray-400 text-sm uppercase tracking-[0.3em]">Advanced Obfuscation System</p>
+        <p class="text-gray-500 text-sm uppercase tracking-[0.4em]">HEXADECIMAL_VIRTUAL_MACHINE</p>
     </header>
 
     <main class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-6">
         
         <!-- Input -->
-        <section class="glass p-6 rounded-xl flex flex-col">
-            <h2 class="text-xl font-semibold mb-4 flex items-center">
-                <i class="fas fa-code mr-2 text-white"></i> SOURCE_LUA
+        <section class="glass p-6 rounded-xl flex flex-col border-t-2 border-green-500">
+            <h2 class="text-xl font-semibold mb-4 flex items-center text-white">
+                <i class="fas fa-terminal mr-2 text-green-500"></i> SOURCE_CODE
             </h2>
             <textarea 
                 id="inputCode" 
-                placeholder="Paste your Roblox script here..." 
+                placeholder="Pegue su script de Roblox aquí..." 
                 class="w-full h-80 bg-black text-green-400 p-4 rounded border border-gray-800 neon-border resize-none text-sm"
             ></textarea>
             <button 
                 onclick="processObfuscation()"
-                class="mt-6 w-full py-4 glass text-green-400 font-bold rounded-lg transition-all duration-300 btn-glow uppercase"
+                class="mt-6 w-full py-4 glass text-green-400 font-bold rounded-lg transition-all duration-300 btn-glow uppercase tracking-widest"
             >
-                ENCRYPT SCRIPT
+                VIRTUALIZE SCRIPT
             </button>
         </section>
 
         <!-- Output -->
-        <section class="glass p-6 rounded-xl flex flex-col">
-            <div class="flex items-center justify-between mb-4">
+        <section class="glass p-6 rounded-xl flex flex-col border-t-2 border-green-500">
+            <div class="flex items-center justify-between mb-4 text-white">
                 <h2 class="text-xl font-semibold flex items-center">
-                    <i class="fas fa-microchip mr-2 text-white"></i> PROTECTED_VM
+                    <i class="fas fa-microchip mr-2 text-green-500"></i> ENCRYPTED_OUTPUT
                 </h2>
-                <button onclick="copyOutput()" class="text-xs bg-green-900 text-green-400 px-3 py-1 rounded hover:bg-green-400 hover:text-black font-bold">
+                <button onclick="copyOutput()" id="copyBtn" class="text-xs bg-green-900 text-green-400 px-3 py-1 rounded hover:bg-green-400 hover:text-black font-bold transition-all">
                     COPY
                 </button>
             </div>
             <textarea 
                 id="outputCode" 
                 readonly 
-                placeholder="Protected script will appear here..." 
+                placeholder="El script protegido aparecerá aquí..." 
                 class="w-full h-80 bg-black text-white p-4 rounded border border-gray-800 resize-none text-[10px] font-mono"
             ></textarea>
             <div id="status" class="mt-6 text-center text-[10px] text-gray-500 uppercase tracking-widest">
-                SYSTEM: STANDBY
+                ESTADO: ESPERANDO_ORDENES
             </div>
         </section>
 
     </main>
 
+    <footer class="mt-12 w-full max-w-4xl grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+        <div class="glass p-4 rounded-lg">
+            <i class="fas fa-biohazard text-green-500 text-xl mb-2"></i>
+            <h3 class="text-xs font-bold text-white">HEX_VM</h3>
+            <p class="text-[9px] text-gray-500">Indescifrable para humanos</p>
+        </div>
+        <div class="glass p-4 rounded-lg">
+            <i class="fas fa-user-ninja text-green-500 text-xl mb-2"></i>
+            <h3 class="text-xs font-bold text-white">STEALTH_MODE</h3>
+            <p class="text-[9px] text-gray-500">Bypass de detección simple</p>
+        </div>
+        <div class="glass p-4 rounded-lg">
+            <i class="fas fa-shield-virus text-green-500 text-xl mb-2"></i>
+            <h3 class="text-xs font-bold text-white">ELITE_SEC</h3>
+            <p class="text-[9px] text-gray-500">Protección de integridad</p>
+        </div>
+    </footer>
+
     <script>
+        // Convertir String a Hexadecimal (Más estable que Base64)
+        function toHex(str) {
+            let result = '';
+            for (let i = 0; i < str.length; i++) {
+                result += str.charCodeAt(i).toString(16).padStart(2, '0');
+            }
+            return result;
+        }
+
         function processObfuscation() {
             const script = document.getElementById('inputCode').value;
             const output = document.getElementById('outputCode');
             const status = document.getElementById('status');
 
-            if (!script.trim()) return;
+            if (!script.trim()) {
+                status.innerHTML = "<span class='text-red-500'>ERROR: SIN_DATOS</span>";
+                return;
+            }
 
-            status.innerHTML = "<span class='text-white animate-pulse'>GENERATING_VM...</span>";
+            status.innerHTML = "<span class='text-white animate-pulse'>VIRTUALIZANDO_VM...</span>";
             
             setTimeout(() => {
-                const b64 = btoa(unescape(encodeURIComponent(script)));
+                const hexData = toHex(script);
                 const rName = (l) => Array.from({length: l}, () => "lI1"[Math.floor(Math.random()*3)]).join('');
                 
-                const v1 = rName(15); // Decoder
-                const v2 = rName(15); // Runner
-                const v3 = rName(15); // Data
-                
-                const protected = `--[[ 🛡️ MORTYHUB ELITE V3 ]]
-local ${v3} = "${b64}"
-local function ${v1}(data)
-    local b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-    data = string.gsub(data, '[^'..b..'=]', '')
-    return (data:gsub('.', function(x)
-        if (x == '=') then return '' end
-        local r, f = '', (b:find(x) - 1)
-        for i = 6, 1, -1 do r = r .. (f % 2 ^ i - f % 2 ^ (i - 1) > 0 and '1' or '0') end
-        return r
-    end):gsub('%d%d%d%d%d%d%d%d', function(x)
-        return string.char(tonumber(x, 2))
-    end))
+                // Nombres de variables ultra confusos
+                const v_decoder = rName(25);
+                const v_data = rName(22);
+                const v_runner = rName(20);
+                const v_hex = rName(18);
+
+                const protected = `--[[ 🛡️ MORTYHUB ELITE V3 (HEX-VM EDITION) ]]
+local ${v_data} = "${hexData}"
+local function ${v_decoder}(${v_hex})
+    local result = ""
+    for i = 1, #${v_hex}, 2 do
+        local byte = string.sub(${v_hex}, i, i + 1)
+        result = result .. string.char(tonumber(byte, 16))
+    end
+    return result
 end
 
-local ${v2} = loadstring(${v1}(${v3}))
-if ${v2} then
-    task.spawn(${v2})
+local ${v_runner} = loadstring(${v_decoder}(${v_data}))
+if ${v_runner} then
+    spawn(function()
+        ${v_runner}()
+    end)
 else
-    warn("MORTYHUB ERROR: VM_FAILED")
+    warn("MORTYHUB_CRITICAL_ERROR: VM_FAILED")
 end`;
                 
                 output.value = protected;
-                status.innerHTML = "<span class='text-green-400'>V3_READY_FOR_EXECUTION</span>";
-            }, 500);
+                status.innerHTML = "<span class='text-green-400'>PROTECCIÓN_V3_EXITOSA</span>";
+            }, 600);
         }
 
         function copyOutput() {
             const out = document.getElementById("outputCode");
+            const btn = document.getElementById("copyBtn");
+            if(!out.value) return;
             out.select();
             document.execCommand("copy");
-            document.getElementById('status').innerHTML = "<span class='text-white'>COPIED_TO_CLIPBOARD</span>";
+            btn.innerText = "COPIED!";
+            setTimeout(() => btn.innerText = "COPY", 2000);
         }
     </script>
 </body>
